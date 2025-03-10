@@ -1,6 +1,7 @@
 import pkg from "mongoose";
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
+import pg from "pg";
 import cors from "cors";
 const { connect } = pkg;
 
@@ -27,6 +28,23 @@ connect(process.env.MONGODB_URI, {
       } catch (err) {
         console.error("Error:", err);
         res.status(500).send("Hmmm, something smells... No socks for you! ☹");
+      }
+    });
+    app.post("/quacks/login", async (req, res) => {
+      const { username, password } = req.body;
+      try {
+        const result = await pool.query(
+          "SELECT uid FROM users WHERE username = $1 AND password = $2",
+          [username, password]
+        );
+        if (result.rows.length > 0) {
+          res.status(200).json({ uid: result.rows[0].uid });
+        } else {
+          res.status(401).json({ message: "Authentication failed" });
+        }
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
       }
     });
     console.log("Connected to MongoDB");

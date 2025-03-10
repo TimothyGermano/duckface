@@ -19,6 +19,17 @@ function App() {
     fetchQuacks();
   }, []);
 
+  const deleteQuack = async function (id) {
+    const response = await fetch(`http://localhost:5050/api/quacks/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      // Filter out the deleted quack from the state
+      setQuacks(quacks.filter((quack) => quack.id !== id));
+    }
+  };
+
   const addQuack = async function (newQuack) {
     const response = await fetch("http://localhost:5050/api/quacks", {
       method: "POST",

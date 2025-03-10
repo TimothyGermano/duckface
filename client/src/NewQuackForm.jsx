@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function NewQuackForm(props) {
-  const [quackDraft, setQuackDraft] = useState('');
+  const [quackDraft, setQuackDraft] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
     props.addQuack({
-      author: 'Anonymous Quack',
+      author: "Anonymous Quack",
       content: quackDraft,
     });
-    setQuackDraft('');
+    setQuackDraft("");
     // props.quacks.push({}) **NOT THE WAY
-    console.log('done');
+    console.log("done");
   }
 
   return (
